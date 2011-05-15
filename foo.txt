@@ -1,0 +1,29 @@
+*** Settings ***
+Documentation   foo documentation
+Test Setup      setup
+Test Teardown   teardown
+
+*** Test Cases ***
+testcase
+    bar  hello
+
+*** Keywords ***
+bar
+    [Arguments]  ${bar}
+    dumdum  ${bar}
+    try regions after this fuzz '${bar}' buzz
+    a kw  fuzz '${bar}' buzz
+    given a kw
+    foo lib underscore
+    ${variable}=  a kw
+    kw with an argument kw  a kw  some arg
+    comment  foo baaraouau
+    #other kind of comment	
+
+a_kw
+    comment  foo
+			
+fuzz '${infix}' buzz
+     dimsum  ${infix} 
+
+#comment here also

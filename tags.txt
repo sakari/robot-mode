@@ -1,0 +1,67 @@
+*** Settings ***
+Documentation   tags search
+Test Setup      setup
+Test Teardown   teardown
+
+*** Variables ***
+${scalar}  12
+@{list}  1  2
+
+*** Test Cases ***
+robot keywords can be found with tags
+    a robot kw 
+    also try finding a kw given as argument  a robot kw
+    and if you select the following: a robot kw ,it should be found
+
+robot keywords with infix arguments can also be searched
+    a kw with 'infix' argument
+    a kw with a list 'infix' argument
+
+variables used as arguments can be searched using tags
+    from normal kw arguments  ${scalar}  @{list}
+    and also when the variables '${scalar}' '@{list}' are used in infix position 
+    # note that the cursor point needs to be inside the variable when
+    # doing this i.e. anywhere from '$' to '}'
+
+variables cannot be completed correctly
+    when given as normal arguments (try ESC TAB)  ${scal
+    #note the crap
+    and in infix position it is even worse
+
+variables set with kws are tagged with tag.sh
+    set suite variable  ${suitevar}  abc
+    set global variable  @{globalvar}  123
+    set test variable  ${testvar}  test
+    set funny-kind-of variable  ${funnyvar}  funny
+    # M-. on top of above variables should bring you to the same line.
+    # The gist of the thing is that tag.sh thinks that everything
+    # matching 'set ... variable ${varname}' defines some kind of
+    # variable.
+
+variables passed as arguments cannot be found with tags
+    [Arguments]  ${arg1}
+    doing M-. on '${arg1}' will not work
+
+variables passed as '${tagged-infix}' arguments on the other hand are found
+    as we can see by doing M-. on '${tagged-infix}' does work
+    # but poorly as the search is not restricted to inside the kw
+    # being defined. In other words it works only by accident as what
+    # is really being found from the tags is the whole kw.
+
+kw completion 
+    a kw with a
+    foo
+
+*** Keywords ***
+a kw with '${infix}' argument
+    comment  should be found
+
+a kw with a list '@{infix}' argument
+    comment  should be found
+
+a robot kw
+    comment  this should be found
+
+a robot kw found next
+    comment  press continue tags finding to get here after finding 'a robot kw'
+

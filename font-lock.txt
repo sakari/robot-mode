@@ -1,0 +1,47 @@
+*** Settings ***
+Documentation   test font lock
+Test Setup      setup
+Test Teardown   teardown
+
+*** Test Cases ***
+
+variables should have the variable font lock face
+    as argument  ${scalar}
+    as infix '${scalar}' arguments
+    as argument  @{list}
+    as infix '@{list}' arguments  
+
+variable assignment uses the variable face
+    ${scalar}=  uses the comment face
+    @{list}=  uses the comment face
+
+variables can have spaces inside them
+    like this  ${var containing spaces}
+    but not record separators (double spaces)   ${var  other field}
+
+variable face should not be set if the field in question does not have a closing brace '}'
+    run M-x robot-mode
+    this should not be colorized  ${novar
+    and neither should this following kw
+    also here  ${var  is not a variable
+    or here in infix form '${var' as you hopefully see
+    
+comment faces
+    comment  as a kw uses the comment face
+    #also hash comments use comment face
+#hash comments use comment face at top level also
+
+kw calls should not have function face (issue 18)
+    first kw
+
+    this should not have function face
+
+it should not matter whether the indendation is done with tabs or space
+	this step should not have function face       
+
+*** Keywords ***
+font lock for formal arguments in keywords 
+    [Arguments]  ${scalar}  @{list}
+
+font lock for formal infix '${scalar}' and '@{list}' arguments in keywords
+    #no contents
