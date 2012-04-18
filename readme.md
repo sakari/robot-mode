@@ -17,4 +17,4 @@ See the top of robot-mode.el for instructions on how to get emacs to automatical
 
 Tags
 ====	
-Normal etags TAGS file works. To help you out you can use the tag.sh shell script to produce the TAGS file. The mode rebinds whatever is bound to find-tag normally (usually M-.) to the robot keyword search. This also means that continuing finding other matching kws happend by giving the prefix argument (i.e. usually by C-u M-.).
+Normal etags TAGS file works. To help you out you can use the tag.sh shell script to produce the TAGS file. The mode rebinds whatever is bound to find-tag normally (usually M-.) to the robot keyword search. This also means that continuing finding other matching kws happens by giving the prefix argument (i.e. usually by C-u M-.).
