@@ -52,11 +52,10 @@ not set 4 spaces are used.
  "
  (if indent-tabs-mode
      "\t"
-   (make-string (if (boundp 'c-basic-offset) 
-		    c-basic-offset 4) 
-		?\ )
-   )
- )
+   (make-string (if (and (boundp 'c-basic-offset)
+                         (typep c-basic-offset 'integer))
+                    c-basic-offset 4)
+                ?\ )))
 
 
 (defun robot-mode-kw-at-point()
@@ -278,4 +277,3 @@ c-basic-offset defines the amount of spaces that are inserted when indenting.
   (define-key robot-mode-map [remap complete-symbol] 'robot-mode-complete)
   (define-key robot-mode-map [remap indent-region] 'robot-mode-indent-region)
   )
-   
