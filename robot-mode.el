@@ -63,7 +63,7 @@ not set 4 spaces are used.
   "Return the robot keyword (or possibly infix variable) around the current point in buffer"
   (defun extract-kw (str)
     (defun trim (str)
-      (replace-regexp-in-string "\\(^\s+\\)\\|\\(\s+$\\)\\|\n$" "" str))
+      (replace-regexp-in-string "\\(^\\s+\\)\\|\\(\\s+$\\)\\|\\n$" "" str))
     (defun cut-kw (str)
       (replace-regexp-in-string "  .*$" "" str))
     (defun cut-bdd (str) 
