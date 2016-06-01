@@ -278,4 +278,5 @@ c-basic-offset defines the amount of spaces that are inserted when indenting.
   (define-key robot-mode-map [remap complete-symbol] 'robot-mode-complete)
   (define-key robot-mode-map [remap indent-region] 'robot-mode-indent-region)
   )
-   
+
+(provide 'robot-mode)
