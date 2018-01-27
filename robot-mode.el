@@ -28,21 +28,37 @@
 ;; You can participate by sending pull requests to https://github.com/sakari/robot-mode
 
 (setq robot-mode-keywords
-      '(
-	;;normal comment
-	("#.*" . font-lock-comment-face)
-	;;Section headers
-	("\\*\\*\\* [^\\*]+ \\*\\*\\*" . font-lock-keyword-face)
-	;;keyword definitions
-	("^[^ \t\n].+" . font-lock-function-name-face)
-	;;Variables
-	("\\(\\$\\|@\\){\\( ?[^ }$]\\)+}" 0 font-lock-variable-name-face t)
-	;;tags etc
-	("\\[[^\]]+\\]+" . font-lock-constant-face)
-	;;comment kw
-	("comment  .*" . font-lock-comment-face)
-	)
-      )
+      (let* (
+             (words1 '("..." ":FOR" "AND" "ELSE" "IF" "IN RANGE" "IN"))
+             (words2 '("Documentation" "Library" "Resource" "Suite Setup" "Suite Teardown"
+                       "Test Timeout" "Variables" "Test Setup" "Test Teardown"))
+             (words1-regexp (concat (regexp-opt words1) "\\s-"))
+             (words2-regexp (concat "^" (regexp-opt words2 'words)))
+             ;; construct regexp for variable face
+             (variable-not-allowed-characters "[^ \t{}\\$]")
+             (variable-allowed-pattern (format "\\( ?%s\\)*" variable-not-allowed-characters))
+             (variable-pattern (format "[@\\$]{%s\\(:?[@\\$]{%s+}\\)?%s}" variable-allowed-pattern
+                                       variable-not-allowed-characters variable-allowed-pattern))
+             )
+        `(
+          ;;normal comment
+          ("#.*" . font-lock-comment-face)
+          ;;FOR, IF etc
+          (,words1-regexp . font-lock-type-face)
+          ;;Suite setup keywords
+          (,words2-regexp . font-lock-builtin-face)
+          ;;Section headers
+          ("\\*\\*\\* ?[^\\*]+ ?\\*\\*\\*" . font-lock-keyword-face)
+          ;;keyword definitions
+          ("^[^ \t\n\$]+" . font-lock-function-name-face)
+          ;;Variables (use 0 operator with t argument instead of . to allow variable highlighting inside comments)
+          ( ,variable-pattern . font-lock-variable-name-face)
+          ;;tags etc
+          ("\\[[^\]]+\\]+" . font-lock-constant-face)
+          ;;comment kw
+          ("[Cc]omment\\(  \\|\t\\).*" . font-lock-comment-face)
+          )
+        ))
 
 (defun robot-indent()
   "Returns the string used in indation.
@@ -253,7 +269,7 @@ Set indent-tabs-mode to non-nil to use tabs for indantation. If indent-tabs-mode
 c-basic-offset defines the amount of spaces that are inserted when indenting.
 "
   (require 'etags)
-  (set (make-local-variable 'font-lock-defaults) '(robot-mode-keywords))
+  (setq font-lock-defaults '((robot-mode-keywords)))
 
   (set (make-local-variable 'comment-start) "#")
   (set (make-local-variable 'comment-start-skip) "#")
