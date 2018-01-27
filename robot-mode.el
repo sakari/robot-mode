@@ -79,15 +79,15 @@ not set 4 spaces are used.
   "Return the robot keyword (or possibly infix variable) around the current point in buffer"
   (defun extract-kw (str)
     (defun trim (str)
-      (replace-regexp-in-string "\\(^\s+\\)\\|\\(\s+$\\)\\|\n$" "" str))
+      (string-trim (replace-regexp-in-string "\\(^\s+\\)\\|\\(\s+$\\)\\|\n$" "" str)))
     (defun cut-kw (str)
-      (replace-regexp-in-string "  .*$" "" str))
+      (replace-regexp-in-string "\\(  \\|\t\\).*$" "" str))
     (defun cut-bdd (str) 
       (replace-regexp-in-string "^\\(given\\)\\|\\(then\\)\\|\\(when\\)\\s*" "" str))
     (cut-kw (cut-bdd (trim str)))
     )
-  (let* ((kw-end (save-excursion (re-search-forward "$\\|\\(  \\)")))
-	 (kw-start (save-excursion (re-search-backward "^\\|\\(  \\)")))
+  (let* ((kw-end (save-excursion (re-search-forward "$\\|\\(  \\)\\|\t")))
+	 (kw-start (save-excursion (re-search-backward "^\\|\\(  \\)\\|\t")))
 	 )
     (save-excursion 
       (let* ((variable-end (re-search-forward "[^}]*}" kw-end t))
@@ -142,7 +142,7 @@ This function is bound to \\[robot-mode-complete].
     (let ((possible-completions ()))
       (let ((enable-recursive-minibuffers t)
 	    (pick-next-buffer nil)
-	    (kw-full (format "^ *\\(def +\\)?\\([^\177 \n]*%s[^\177\n]*?\\)(?\177\\(\\(.+\\)\\)?" kw-regexp)))
+	    (kw-full (format "^\\s-*\\(def +\\)?\\(%s[^\177\n]*?\\)(?\177\\(\\(.+\\)\\)?" kw-regexp)))
 	(save-excursion
 	  (visit-tags-table-buffer pick-next-buffer)
 	  (set 'pick-next-buffer t)
