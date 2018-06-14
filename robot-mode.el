@@ -44,19 +44,36 @@
 	)
       )
 
+(defun robot-active-style()
+  "Returns the name of the active c-default-style for mode
+  \"other\". If no style is set, \"gnu\" is returned."
+  (cond ((stringp c-default-style) c-default-style)
+        ((listp c-default-style)
+         (cdr (assoc 'other
+                     (append c-default-style '((other . "gnu"))))))
+        (t "gnu")))
+
+(defun robot-offset-from-style()
+  "Gets the c-basic-offset from the active style."
+  (cdr (assoc 'c-basic-offset
+              (cdr (assoc (robot-active-style) c-style-alist)))))
+
 (defun robot-indent()
-  "Returns the string used in indation.
-Set indent-tabs-mode to non-nil to use tabs in indentation. If indent-tabs-mode is 
-set to nil c-basic-offset defines how many spaces are used for indentation. If c-basic-offset is
-not set 4 spaces are used.
- "
- (if indent-tabs-mode
-     "\t"
-   (make-string (if (boundp 'c-basic-offset) 
-		    c-basic-offset 4) 
-		?\ )
-   )
- )
+  "Returns the string used in indentation.
+Set indent-tabs-mode to non-nil to use tabs in indentation. If indent-tabs-mode
+is set to nil c-basic-offset defines how many spaces are used for indentation.
+If c-basic-offset is set-from-style, the offset for the active style is used. If
+c-basic-offset is not set 4 spaces are used."
+  (if indent-tabs-mode
+      "\t"
+    (make-string (if (boundp 'c-basic-offset)
+                     (if (eq c-basic-offset 'set-from-style)
+                         (robot-offset-from-style)
+                       c-basic-offset)
+                   4)
+                 ?\ )
+    )
+  )
 
 
 (defun robot-mode-kw-at-point()
