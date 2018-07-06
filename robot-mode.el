@@ -349,4 +349,5 @@ robot-basic-offset defines the amount of spaces that are inserted when indenting
    
 (add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode))
 
+(provide 'robot-mode)
 ;;; robot-mode.el ends here
