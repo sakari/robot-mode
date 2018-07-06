@@ -28,6 +28,7 @@
 (require 's)
 
 (defvar robot-keyword-word-separator " " "Character that is used to distinguish words in keywords, underscore or space should be used")
+(defvar robot-basic-offset 4 "Defines how many spaces are used for indentation (only used when indent-tabs mode is nil)")
 
 (setq robot-mode-keywords
       (let* (
@@ -64,17 +65,15 @@
 
 (defun robot-indent()
   "Returns the string used in indation.
+
 Set indent-tabs-mode to non-nil to use tabs in indentation. If indent-tabs-mode is 
-set to nil c-basic-offset defines how many spaces are used for indentation. If c-basic-offset is
-not set 4 spaces are used.
- "
- (if indent-tabs-mode
-     "\t"
-   (make-string (if (boundp 'c-basic-offset) 
-		    c-basic-offset 4) 
-		?\ )
-   )
- )
+set to nil robot-basic-offset defines how many spaces are used for indentation.
+"
+  (if indent-tabs-mode
+      "\t"
+    (make-string robot-basic-offset ?\ )
+    )
+  )
 
 (defun robot-keyword-start-point()
   (save-excursion (re-search-backward "^\\|\\(  \\)\\|\t"))
@@ -304,7 +303,7 @@ This function is bound to \\[robot-mode-indent].
   )
 )
 
-(define-derived-mode robot-mode fundamental-mode
+(define-derived-mode robot-mode prog-mode
   "robot mode"
   "Major mode for editing Robot Framework text files.
 
@@ -319,7 +318,7 @@ the cursor point is at and \\[end-of-defun] to move to the end of the kw.
 To select (i.e. put a region around) the whole kw definition press \\[mark-defun].
  
 Set indent-tabs-mode to non-nil to use tabs for indantation. If indent-tabs-mode is nil, 
-c-basic-offset defines the amount of spaces that are inserted when indenting.
+robot-basic-offset defines the amount of spaces that are inserted when indenting.
 "
   (require 'etags)
   (setq font-lock-defaults '((robot-mode-keywords)))
