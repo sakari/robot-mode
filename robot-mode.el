@@ -1,17 +1,15 @@
+;;; robot-mode.el --- Support for robot framework files
+
+;; Author: Juuso Valkeejärvi <jvalkeejarvi@gmail.com>
+;; Version: 1.0
+;; Keywords: robot
+
 ;; Robot mode
+
 ;; ==========
-;;
+
 ;; A major mode for editing robot framework text files.
-;; Add the following to your .emacs file
-;;
-;;    (load-file "path/to/robot-mode.el")
-;;    (add-to-list 'auto-mode-alist '("\\.txt\\'" . robot-mode))
-;;
-;; Type "M-x load-file" and give the path to the .emacs file (e.g. ~/.emacs)
-;; to reload the file. Now when you open a .txt file emacs automatically sets 
-;; the robot-mode on for that buffer. This will also be done automatically when
-;; you start emacs.
-;;
+
 ;;     This program is free software: you can redistribute it and/or modify
 ;;     it under the terms of the GNU General Public License as published by
 ;;     the Free Software Foundation, either version 3 of the License, or
@@ -25,7 +23,7 @@
 ;;     You should have received a copy of the GNU General Public License
 ;;     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;
-;; You can participate by sending pull requests to https://github.com/sakari/robot-mode
+;; You can participate by sending pull requests to https://github.com/jvalkeejarvi/robot-mode
 
 (require 's)
 
@@ -352,3 +350,4 @@ c-basic-offset defines the amount of spaces that are inserted when indenting.
    
 (add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode))
 
+;;; robot-mode.el ends here
