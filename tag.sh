@@ -51,7 +51,7 @@ until [ -z "$1" ]; do
   esac
 done
 
-find $testmaterial $prune -name '*.txt' -print | xargs etags -o $tagfile --regex='/^[^ \t].*/i' \
+find $testmaterial $prune -name '*.robot' -print | xargs etags -o $tagfile --regex='/^[^ \t].*/i' \
     --regex='/^[ \t]+set [^ ]+ variable  +\(\$\|\@\){[^}]+}/i'
 
 find $libraries $prune -name '*.py' -print | xargs etags -o $tagfile -a
